@@ -1,0 +1,1645 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://s4.ax1x.com/2021/12/22/TQjIaQ.png">
+  <link rel="icon" href="https://s4.ax1x.com/2021/12/22/TQjIaQ.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="宇智波佐助">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ROS 参考官方教程进行学习ROS&#x2F;Tutorials，先从ROS1开始学习而不是ROS2，是因为很多项目还是基于ROS1的，而且ROS1&#x2F;2很多地方并不兼容，例如ROS2就没有catkin编译了，而且很多包名称都不相同，因此还是从ROS1开始学习吧！  什么是ROS 从官网上的ROS&#x2F;Introduction中可以看出，ROS是一个用于管理机器人控制的操作系统（既可以从底层控制每一个电机，也可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS1入门">
+<meta property="og:url" content="https://mimosadott.github.io/posts/19333/index.html">
+<meta property="og:site_name" content="马俊杰&#39;s blog">
+<meta property="og:description" content="ROS 参考官方教程进行学习ROS&#x2F;Tutorials，先从ROS1开始学习而不是ROS2，是因为很多项目还是基于ROS1的，而且ROS1&#x2F;2很多地方并不兼容，例如ROS2就没有catkin编译了，而且很多包名称都不相同，因此还是从ROS1开始学习吧！  什么是ROS 从官网上的ROS&#x2F;Introduction中可以看出，ROS是一个用于管理机器人控制的操作系统（既可以从底层控制每一个电机，也可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mimosadott.github.io/figures/robotics/ros/ROS_graph.drawio.png">
+<meta property="og:image" content="https://mimosadott.github.io/figures/robotics/ros/ros1_1_5_plot_config.png">
+<meta property="og:image" content="https://mimosadott.github.io/figures/robotics/ros/ros1_1_5_rqt_plot.png">
+<meta property="og:image" content="https://mimosadott.github.io/figures/robotics/ros/ros1_1_10_turtle_double_loves.gif">
+<meta property="og:image" content="https://mimosadott.github.io/figures/robotics/ros/ros1_1_10_turtle_double_loves.png">
+<meta property="article:published_time" content="2024-12-09T03:11:26.000Z">
+<meta property="article:modified_time" content="2025-02-23T08:26:47.000Z">
+<meta property="article:author" content="宇智波佐助">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mimosadott.github.io/figures/robotics/ros/ROS_graph.drawio.png">
+  
+  
+  
+  <title>ROS1入门 - 马俊杰&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.15.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fold_code.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_3429772_kq6ntj4nzdo.css">
+<link rel="stylesheet" href="//fastly.jsdelivr.net/gh/bynotes/texiao/source/css/toubudaziji.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mimosadott.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"843a38ffdc8864dd30e250b723a1a8ca","google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Home</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>文档</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/18857/" target="_self">
+                    
+                    <span>模板&dotfiles</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://s4.ax1x.com/2021/12/22/TQOxyT.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ROS1入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-09 11:11" pubdate>
+          2024年12月9日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          67 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ROS1入门</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="ros"><a class="markdownIt-Anchor" href="#ros"></a> ROS</h1>
+<p>参考官方教程进行学习<a target="_blank" rel="noopener" href="http://wiki.ros.org/ROS/Tutorials">ROS/Tutorials</a>，先从ROS1开始学习而不是ROS2，是因为很多项目还是基于ROS1的，而且ROS1/2很多地方并不兼容，例如ROS2就没有catkin编译了，而且很多包名称都不相同，因此还是从ROS1开始学习吧！</p>
+<h2 id="什么是ros"><a class="markdownIt-Anchor" href="#什么是ros"></a> 什么是ROS</h2>
+<p>从官网上的<a target="_blank" rel="noopener" href="http://wiki.ros.org/cn/ROS/Introduction">ROS/Introduction</a>中可以看出，ROS是一个用于管理机器人控制的操作系统（既可以从底层控制每一个电机，也可以结合上层信息，通过雷达、深度相机进行决策），ROS运行时类似一个系统，可以开启多个不同的进程，他们称之为节点。</p>
+<p>这个系统中的通讯包含不同类型：同步的services（服务），异步的topics（话题），以及用于数据存储的Parameter Server（参数服务器）</p>
+<p>ROS所支持的语言有Python, C++, Lisp，下面开始用Docker安装ROS1吧。</p>
+<h2 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h2>
+<p>在<a target="_blank" rel="noopener" href="http://wiki.ros.org/Installation">ROS/Installation</a>上可以看到当前ROS1最长维护的版本为ROS Noetic，推荐Ubuntu20.04（高版本装不上😭），但是我们不能为了装个ROS去装这个版本的系统，因此需要用到Docker，还可以方便的使用不同版本的ROS🤗。</p>
+<p>Docker安装与常用命令可以参考我这篇<a href="/posts/51856/">博文</a>，安装完成Docker后，可以直接从docker hub上pull我准备好的ROS1环境（下载大小为1.33 GB，支持Nvidia 11.8驱动，zsh, tmux, git等工具）</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> pull wtyyy/ros:ros1-noetic-cuda11.8.0-ubuntu20.04  <span class="token comment"># 记得开代理或镜像</span>
+xhost +local:root  <span class="token comment"># 用于可视化</span>
+<span class="token assign-left variable">CATKIN_WORKSPACE</span><span class="token operator">=</span>/home/yy/Coding/learn/catkin  <span class="token comment"># 路径设置为本机的catkin代码保存路径</span>
+
+<span class="token comment"># 启动!</span>
+<span class="token comment"># 很多nvidia或gpu相关的指令都是启动nvidia渲染X11用的, 如果没有nvidia显卡则无需这些指令（加了也没坏处）</span>
+<span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token punctuation">\</span>
+	<span class="token parameter variable">--name</span> <span class="token variable">$&#123;<span class="token environment constant">USER</span>&#125;</span>_learn_ros <span class="token punctuation">\</span>
+	<span class="token parameter variable">--gpus</span> all <span class="token punctuation">\</span>
+	<span class="token parameter variable">-e</span> <span class="token assign-left variable">NVIDIA_DRIVER_CAPABILITIES</span><span class="token operator">=</span>all <span class="token punctuation">\</span>
+	<span class="token parameter variable">-e</span> <span class="token string">"__NV_PRIME_RENDER_OFFLOAD=1"</span> <span class="token punctuation">\</span>
+	<span class="token parameter variable">-e</span> <span class="token string">"__GLX_VENDOR_LIBRARY_NAME=nvidia"</span> <span class="token punctuation">\</span>
+	<span class="token parameter variable">--net</span><span class="token operator">=</span>host <span class="token punctuation">\</span>
+	<span class="token parameter variable">--privileged</span> <span class="token punctuation">\</span>
+	<span class="token parameter variable">-e</span> <span class="token string">"DISPLAY"</span> <span class="token parameter variable">-e</span> <span class="token string">"QT_X11_NO_MITSHM=1"</span> <span class="token punctuation">\</span>
+	<span class="token parameter variable">-v</span> <span class="token string">"/dev:/dev"</span> <span class="token punctuation">\</span>
+	<span class="token parameter variable">-v</span> <span class="token string">"/tmp/.X11-unix:/tmp/.X11-unix"</span> <span class="token punctuation">\</span>
+	<span class="token parameter variable">-v</span> <span class="token string">"<span class="token variable">$CATKIN_WORKSPACE</span>:/catkin"</span> <span class="token punctuation">\</span>
+	wtyyy/ros:ros1-noetic-cuda11.8.0-ubuntu20.04 <span class="token function">zsh</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>（当然也可以自己跟着官方教程<a target="_blank" rel="noopener" href="http://wiki.ros.org/Installation/Ubuntu">ROS/Installation Ubuntu</a>自己动手安装）</p>
+<h2 id="1-初级教程"><a class="markdownIt-Anchor" href="#1-初级教程"></a> 1 初级教程</h2>
+<h3 id="11-配置ros环境"><a class="markdownIt-Anchor" href="#11-配置ros环境"></a> 1.1 配置ROS环境</h3>
+<p>加载ROS环境参数，通过<code>source /opt/ros/noetic/setup.sh</code>启动ROS相关的环境变量，将ROS软件加入到路径中。</p>
+<blockquote>
+<p>在Docker镜像中我已经将<code>source /opt/ros/noetic/setup.zsh</code>加入到了<code>~/.zshrc</code>中，即默认就会加载ROS配置</p>
+</blockquote>
+<p>创建工作空间，ROS的工作环境如下所示，通过<code>mkdir -p ~/catkin/src</code>即可在用户目录下创建</p>
+<blockquote>
+<p>在Docker镜像中使用，我将本地的<code>$CATKIN_WORKSPACE</code>路径挂在到了<code>/catkin</code>下，也就是创建<code>/catkin/src</code>文件夹即可</p>
+</blockquote>
+<p>然后在<code>/catkin</code>文件夹在执行<code>catkin_make</code>（相当于<code>cmake -B build &amp;&amp; cd build &amp;&amp; make</code>），并会自动生成<code>devel</code>文件夹，在该文件夹下会有<code>setup.sh</code>文件，通过<code>source</code>该文件可以将当前工作空间设置在环境的最顶层。</p>
+<p>通过查看环境变量<code>ROS_PACKAGE_PATH</code>以确定当前工作路径已经被包含：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token variable">$ROS_PACKAGE_PATH</span>
+<span class="token operator">></span> /catkin/src:/opt/ros/noetic/share<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<h3 id="12-ros文件系统"><a class="markdownIt-Anchor" href="#12-ros文件系统"></a> 1.2 ROS文件系统</h3>
+<p>这节主要介绍ROS中的软件包如何安装以及查找软件包的相应位置等操作。</p>
+<h4 id="包路径查找指令"><a class="markdownIt-Anchor" href="#包路径查找指令"></a> 包路径查找指令</h4>
+<ol>
+<li><code>rospack find &lt;pkg_name&gt;</code>: 输出<code>pkg_name</code>的路径。例如<code>rospack find roscpp</code></li>
+<li><code>roscd &lt;pkg_name[/subdir]&gt;</code>: 类似<code>cd</code>命令，直接cd到<code>pkg</code>对应的文件夹下，还支持进入其自文件夹。例如<code>roscd roscpp/cmake</code></li>
+<li><code>roscd log</code>: 在运行过ROS程序后，可以通过该命令进入到日志文件夹下。</li>
+<li><code>rosls &lt;pkg_name[/subdir]&gt;</code>: 类似<code>ls</code>命令，相当于执行<code>ls $(rospack find pkg_name)[/subdir]</code>。例如<code>rosls roscpp/cmake</code></li>
+</ol>
+<h3 id="13-ros包文件结构"><a class="markdownIt-Anchor" href="#13-ros包文件结构"></a> 1.3 ROS包文件结构</h3>
+<p>一个caktin软件包包含至少两个文件</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">package/
+  CMakeLists.txt  <span class="token comment"># CMake文件代码编译指令</span>
+  package.xml  <span class="token comment"># 所用到的相关包</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>多个软件包的文件格式如下</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">catkin/
+  src/
+    CMakeLists.txt  <span class="token comment"># 最上层的CMake文件（自动生成）</span>
+    package1/
+      CMakeLists.txt  <span class="token comment"># package1的CMake文件</span>
+      package.xml  <span class="token comment"># package1的清单文件(manifest)</span>
+      srv/  <span class="token comment"># 存储定义的service数据格式 *.srv</span>
+      msg/  <span class="token comment"># 存储定义的message数据格式 *.msg</span>
+      scripts/  <span class="token comment"># C++/Python脚本</span>
+      launch/  <span class="token comment"># roslaunch并发执行配置文件 *.launch</span>
+    package2/
+      CMakeLists.txt  <span class="token comment"># package2的CMake文件</span>
+      package.xml  <span class="token comment"># package2的清单文件(manifest)</span>
+    <span class="token punctuation">..</span>.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<h4 id="创建空项目"><a class="markdownIt-Anchor" href="#创建空项目"></a> 创建空项目</h4>
+<p>可以通过<code>catkin_create_pkg &lt;pkg_name&gt; [dep1] [dep2] ...</code>指令创建一个新的空项目，例如</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /catkin/src
+catkin_create_pkg tutorials std_msgs rospy roscpp<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p>这样就会创建一个软件包，包含上述的<code>CMakeLists.txt</code>和<code>package.xml</code>文件，以及<code>src/</code>和<code>include/</code>目录。</p>
+<p>于是我们就可以对其进行编译，然后将软件包加入到工作空间中：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /catkin
+catkin_make
+<span class="token builtin class-name">source</span> ./devel/setup.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
+<h4 id="查看包依赖关系"><a class="markdownIt-Anchor" href="#查看包依赖关系"></a> 查看包依赖关系</h4>
+<ol>
+<li><code>rospack depends1 &lt;pkg_name&gt;</code>: 查看包的第一级依赖，在包对应的<code>package.xml</code>文件中可以找到返回的依赖文件。例如<code>rospack depends1 tutorials</code>就可以看到<code>std_msgs rospy roscpp</code>三个包。</li>
+<li><code>rospack depends &lt;pkg_name&gt;</code>: 递归地查找依赖包。</li>
+</ol>
+<h4 id="查看packagexml文件"><a class="markdownIt-Anchor" href="#查看packagexml文件"></a> 查看package.xml文件</h4>
+<p>参考官方的<a target="_blank" rel="noopener" href="http://wiki.ros.org/catkin/package.xml">package.xml/Format 2</a>文档，xml文件类似于网页文件，变量定义都称为tag，格式例如<code>&lt;name tag传入参数&gt;tag定义&lt;/name&gt;</code>，当前所用的版本为<code>Format2</code>至少所需的tag内容如下:</p>
+<ol>
+<li><code>&lt;name&gt;</code>: 软件包名称</li>
+<li><code>&lt;version&gt;</code>: 软件版本号，必须是3个用<code>.</code>分隔的整数</li>
+<li><code>&lt;description&gt;</code>: 对本项目的描述内容</li>
+<li><code>&lt;maintainer&gt;</code>: 对项目维护者信息介绍</li>
+<li><code>&lt;license&gt;</code>: 本项目使用的许可证</li>
+</ol>
+<blockquote>
+<p>还有<code>&lt;url&gt;, &lt;author&gt;</code>可选信息可以加，参考用<code>catkin_create_pkg</code>创建的<code>package.xml</code>模板文件</p>
+</blockquote>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        最小化package.xml例子
+    </div>
+    <div class='spoiler-content'>
+        <figure><div class="code-wrapper"><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token prolog">&lt;?xml version="1.0"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>package</span> <span class="token attr-name">format</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>tutorials<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">></span></span>The tutorials package<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">></span></span>
+
+  <span class="token comment">&lt;!-- One maintainer tag required, multiple allowed, one person per tag --></span>
+  <span class="token comment">&lt;!-- Example:  --></span>
+  <span class="token comment">&lt;!-- &lt;maintainer email="jane.doe@example.com">Jane Doe&lt;/maintainer> --></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maintainer</span> <span class="token attr-name">email</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>root@todo.todo<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>root<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maintainer</span><span class="token punctuation">></span></span>
+
+
+  <span class="token comment">&lt;!-- One license tag required, multiple allowed, one license per tag --></span>
+  <span class="token comment">&lt;!-- Commonly used license strings: --></span>
+  <span class="token comment">&lt;!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 --></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>license</span><span class="token punctuation">></span></span>TODO<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>license</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>package</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+    </div>
+</div>
+<p>声明完上述5个信息后，我们需要加入构建包所需的依赖包声明，声明函数都是类似<code>*depend</code>格式:</p>
+<ul>
+<li><code>&lt;depend&gt;</code>: 最方便的导入包方式，包含下面<code>build, export, exec</code>三个命令</li>
+<li><code>&lt;build_depend&gt;</code>: 找到包的路径，类似cmake中的<code>find_package(...)</code></li>
+<li><code>&lt;build_export_depend&gt;</code>: 加入包的头文件, 类似cmake中的<code>target_include_directories(...)</code></li>
+<li><code>&lt;exec_depend&gt;</code>: 加入包的动态链接库, 类似cmake中的<code>target_link_libraries(...)</code></li>
+<li><code>&lt;test_depend&gt;</code>: 指定仅用于单元测试的包, 这些包不应该在上面<code>export,exec</code>中出现</li>
+<li><code>&lt;buildtool_depend&gt;</code>: 一般必须加的tag，制定编译所需的工具，这里一般就是<code>catkin</code></li>
+<li><code>&lt;doc_depend&gt;</code>: 指定用于生成文档的包</li>
+</ul>
+<p>上面创建<code>tutorials/package.xml</code>最终简化版本的文件如下</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token prolog">&lt;?xml version="1.0"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>package</span> <span class="token attr-name">format</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>tutorials<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">></span></span>The tutorials package<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maintainer</span> <span class="token attr-name">email</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>root@todo.todo<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>root<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maintainer</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>license</span><span class="token punctuation">></span></span>TODO<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>license</span><span class="token punctuation">></span></span>
+
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>buildtool_depend</span><span class="token punctuation">></span></span>catkin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>buildtool_depend</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>depend</span><span class="token punctuation">></span></span>roscpp<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>depend</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>depend</span><span class="token punctuation">></span></span>rospy<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>depend</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>depend</span><span class="token punctuation">></span></span>std_msgs<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>depend</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>package</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<blockquote>
+<p>还可以在最后加<code>&lt;export&gt;</code>用于将多个包整合编译成一个元包（meta-package）</p>
+</blockquote>
+<h3 id="14-构建ros软件包"><a class="markdownIt-Anchor" href="#14-构建ros软件包"></a> 1.4 构建ROS软件包</h3>
+<p>这一节主要理解<code>catkin_make</code>对项目代码的编译原理，其实它就是对<code>cmake</code>指令的包装，以下两种命令等价:</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># First</span>
+<span class="token builtin class-name">cd</span> /catkin
+catkin_make
+<span class="token comment"># Second</span>
+<span class="token builtin class-name">cd</span> /catkin/src
+catkin_init_workspace  <span class="token comment"># 这会对src/下的所有项目创建一个父级的CMakeLists.txt</span>
+<span class="token function">mkdir</span> <span class="token punctuation">..</span>/build <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">cd</span> <span class="token punctuation">..</span>/build
+<span class="token comment"># 创建build配置, 安装文件位于../instsall下(如果安装), catkin工作空间配置文件保存在../devel下(运行既创建)</span>
+cmake <span class="token punctuation">..</span>/src <span class="token parameter variable">-DCMAKE_INSTALL_PREFIX</span><span class="token operator">=</span><span class="token punctuation">..</span>/install <span class="token parameter variable">-DCATKIN_DEVEL_PREFIX</span><span class="token operator">=</span><span class="token punctuation">..</span>/devel
+<span class="token function">make</span>  <span class="token comment"># 编译</span>
+<span class="token comment"># (可选) 等价于 catkin_make install</span>
+<span class="token function">make</span> <span class="token function">install</span>  <span class="token comment"># (可选)安装, 这样就会在/catkin/install路径下安装本软件包</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>当然此处也可以不安装在工作站位置<code>../install</code>，可以直接装到全局的ros包位置，也可以用<code>catkin_make</code>一步完成:</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">catkin_make <span class="token parameter variable">-DCMAKE_INSTALL_PREFIX</span><span class="token operator">=</span>/opt/ros/noetic <span class="token function">install</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<h3 id="15-ros-node"><a class="markdownIt-Anchor" href="#15-ros-node"></a> 1.5 ROS Node</h3>
+<p>首先安装<code>ros-tutorials</code>软件包（package）<code>apt install ros-noetic-ros-tutorials</code>（如果安装的不是桌面完整版则需安装）</p>
+<p>ROS正常可以被描述成一个图(Graph)， 包含如下这些概念：</p>
+<ol>
+<li>Nodes（节点）：一个可执行程序，该程序可以通过向Topic交互数据，从而与其他节点通信；</li>
+<li>Messages（消息）：ROS的数据格式，当node通过subscribing（订阅，接受消息）或者publishing（发布，发送消息）从Topic交互信息时使用的格式，<strong>同步</strong>；</li>
+<li>Topics（话题）：node之间可以通过subscribing从topic接收消息，publish向topic发送消息，<strong>异步</strong>；</li>
+<li>Master（主节点）：ROS的主服务，例如能帮助node能够互相找到；</li>
+<li>rosout：相当于ROS中的标准输出<code>stdout/stderr</code></li>
+<li>roscore：包含master+rosout+parameter server（参数服务器，后文介绍）</li>
+</ol>
+<p><img src="/figures/robotics/ros/ROS_graph.drawio.png" srcset="/img/loading.gif" lazyload alt="ROS Graph" /></p>
+<p>下面我们来测试下ROS工作流程：</p>
+<ol>
+<li>终端执行<code>roscore</code>，这是执行所有ROS程序前需要的命令（最好在tmux的一个新建window中运行，后台挂起，在其他window中运行node）</li>
+<li>新建一个终端，可以尝试<code>rosnode</code>命令来查看各种node相关的信息，例如<code>rosnode list</code>可以列出当前所有节点（只有<code>/rosout</code>在运行哦）</li>
+<li>开启一个新的node，通过<code>rosrun &lt;pkg_name&gt; &lt;node_name&gt;</code>来启动一个node（ROS程序），例如<code>rosrun turtlesim turtlesim_node</code>（启动小乌龟渲染节点）</li>
+<li>如果想重复开同一个程序，直接运行会因为重名而把之前的node冲掉，因此我们要再设置一个新名字，在最后加上<a target="_blank" rel="noopener" href="http://wiki.ros.org/Remapping%20Arguments">重定义参数</a><code>__name:=[新名字]</code>，例如<code>rosrun turtlesim turtlesim_node __name=my_turtle</code>，就可以开两个乌龟窗口了🐢🐢</li>
+<li>测试node连接性是否正常，通过<code>rosnode ping &lt;node_name&gt;</code>来和node ping下是否联通</li>
+</ol>
+<h3 id="16-ros-topic"><a class="markdownIt-Anchor" href="#16-ros-topic"></a> 1.6 ROS Topic</h3>
+<p>我们继续保持上面的<code>turtlesim_node</code>开启，再开启一个<code>rosrun turtlesim turtle_teleop_key</code>，这样就可以用方向键上下左右控制小乌龟运动了。</p>
+<h4 id="rqt可视化节点关系"><a class="markdownIt-Anchor" href="#rqt可视化节点关系"></a> rqt可视化节点关系</h4>
+<p>通过安装rqt可以查看节点之间的关联性：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">apt-get</span> <span class="token function">install</span> ros-noetic-rqt
+<span class="token function">apt-get</span> <span class="token function">install</span> ros-noetic-rqt-common-plugins
+
+rosrun rqt_graph rqt_graph  <span class="token comment"># 可视化节点关系图</span>
+rqt_graph  <span class="token comment"># 或者直接运行也可以启动</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p><img src=/figures/robotics/ros/ros1_1_5_rosgraph.png width=50%></img><br />
+每个圆圈就是一个节点，中间连线表示消息的message传输方向，连线上的名称为topic，在这里就只有一个topic: <code>/turtle1/cmd_vel</code>，<code>/teleop_turtle</code>向其publish，<code>/yy_turtle</code>从其subscrib</p>
+<h4 id="rostopic指令"><a class="markdownIt-Anchor" href="#rostopic指令"></a> rostopic指令</h4>
+<p>通过<code>rostopic</code>相关函数可以获取topic的信息：</p>
+<ol>
+<li><code>rostopic list</code>：显示节点信息，可选<code>-v</code>显示详细信息</li>
+<li><code>rostopic echo &lt;/topic_name&gt;</code>：获取topic中的消息</li>
+<li><code>rostopic type &lt;/topic_name&gt;</code>：获取topic中信息的类型（由publisher决定），publisher和subscriber需要支持该类型消息处理</li>
+<li><code>rostopic pub [args] &lt;/topic_name&gt; &lt;data_type&gt; -- &lt;data&gt;</code>：向topic发送格式为<code>data_type</code>的消息<code>data</code>，可以通过<code>args</code>设置发送频率（默认只发送一次消息，就卡着了）</li>
+<li><code>rostopic hz &lt;/topic_name&gt;</code>：获取topic的信息接受频率</li>
+</ol>
+<p>我们可以通过<code>rostopic echo /turtle1/cmd_vel</code>，获取消息，再回到控制小乌龟的终端，移动小乌龟，就可以看到发送的消息是什么了，<code>rostopic type /turtle1/cmd_vel</code>来看看消息是什么类型的：<code>geometry_msgs/Twist</code></p>
+<p>通过<code>rosmsg show geometry_msgs/Twist</code>可以看到这类消息的详细格式要求，或者一行搞定<code>rostopic type /turtle1/cmd_vel | rosmsg show</code>，返回的数据格式如下：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">geometry_msgs/Vector3 linear
+  float64 x
+  float64 y
+  float64 z
+geometry_msgs/Vector3 angular
+  float64 x
+  float64 y
+  float64 z<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>看到消息要求后，我们就可以通过<code>rostopic pub</code>向小乌龟发送消息了：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">rostopic pub <span class="token parameter variable">-r</span> <span class="token number">1</span> /turtle1/cmd_vel geometry_msgs/Twist -- <span class="token string">'[2.0, 0.0, 0.0]'</span> <span class="token string">'[0.0, 0.0, 0.8]'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<ul>
+<li><code>-r 1</code> 表示以1hz频率向topic发送消息</li>
+<li>topic名字为<code>/turtle1/cmd_vel</code>, 消息type为<code>geometry_msgs/Twist</code></li>
+<li><code>--</code> 表示对前面指令和后面消息的分隔符（如果消息里面都是用<code>''</code>或者<code>&quot;&quot;</code>包裹其实没影响，不包裹且有负数出现才必须要这个）</li>
+<li><code>'[2.0, 0.0, 0.0]' '[0.0, 0.0, 0.8]'</code> 对发送数据的描述，命令行版本的YAML，<a target="_blank" rel="noopener" href="http://wiki.ros.org/ROS/YAMLCommandLine">参考</a></li>
+</ul>
+<p>我们分别开两个终端发送这两个数据：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">rostopic pub <span class="token parameter variable">-r</span> <span class="token number">1</span> /turtle1/cmd_vel geometry_msgs/Twist <span class="token string">'[2, 0, 0]'</span> <span class="token string">'[0, 0, 2]'</span>
+rostopic pub <span class="token parameter variable">-r</span> <span class="token number">1</span> /turtle1/cmd_vel geometry_msgs/Twist <span class="token string">'[3, 0, 0]'</span> <span class="token string">'[0, 0, -2]'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p>可以画出下图的效果了<br />
+<img src=/figures/robotics/ros/ros1_1_5_draw_circle.png width=50%></img></p>
+<p>通过<code>rostopic hz /turtle1/color_sensor</code>来确定你的节点以多少hz发送画面渲染消息（我是125hz）</p>
+<p>通过<code>rostopic echo /turtle1/pose</code>可以查看这个topice下的数据有哪些，看到有如下这些信息</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">x: <span class="token number">3.218510150909424</span>
+y: <span class="token number">7.931597709655762</span>
+theta: <span class="token number">2.8436872959136963</span>
+linear_velocity: <span class="token number">2.0</span>
+angular_velocity: <span class="token number">0.800000011920929</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>于是可以通过<code>rosrun rqt_plot rqt_plot</code>实时绘制这些topic中相应数值的曲线图，打开界面后在左上角分别输入以下三个，用右侧加号加入图表</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">/turtle1/pose/x
+/turtle1/pose/y
+/turtle1/pose/theta<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>如果发现绘制速度过快，是因为x轴范围太小导致，可以通过上方倒数第二个按钮，修改<code>X-Axis, Left, Right</code>的差值更大（修改其中一个即可，自动更新时会保持差值一致的），绘制效果如下图所示</p>
+<table>
+<thead>
+<tr>
+<th>配置X轴范围</th>
+<th>绘制曲线效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/figures/robotics/ros/ros1_1_5_plot_config.png" srcset="/img/loading.gif" lazyload alt="1" /></td>
+<td><img src="/figures/robotics/ros/ros1_1_5_rqt_plot.png" srcset="/img/loading.gif" lazyload alt="2" /></td>
+</tr>
+</tbody>
+</table>
+<h3 id="17-ros-service"><a class="markdownIt-Anchor" href="#17-ros-service"></a> 1.7 ROS Service</h3>
+<p>ROS中service（服务）是节点中的另一种通讯方式，service是同步的通讯机制（RPC模式，发送request请求立马获得一个response响应），而topic是异步的通讯机制（一个发送数据，另一个可以选择性接受数据）</p>
+<p>rosservice包含以下这些操作：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">rosservice list  <span class="token comment"># 显示当前的service, 可选-n选项, 显示是由哪个node创建的service</span>
+rosservice info <span class="token operator">&lt;</span>/srv_name<span class="token operator">></span>   <span class="token comment"># 显示当前srv的具体信息, 包含type, args, uri(链接), node</span>
+rosservice call <span class="token operator">&lt;</span>/srv_name<span class="token operator">></span> -- <span class="token operator">&lt;</span>msg<span class="token operator">></span>  <span class="token comment"># 向srv发送message, message格式需要和rosservice args &lt;/srv_name></span>
+rosservice <span class="token function">find</span> <span class="token operator">&lt;</span>/srv_msg<span class="token operator">></span> <span class="token operator">|</span> rossrv show  <span class="token comment"># 根据service message查找对应的node</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>这里有两个message:</p>
+<ul>
+<li>topic发送的：<code>rosmsg show &lt;topic_msg&gt;</code>获取参数数据，直接查询topic并获取args：<code>rostopic type &lt;/topic_name&gt; | rosmsg show</code></li>
+<li>service发送的：<code>rossrv show &lt;srv_msg&gt;</code>获取参数数据，直接查询service并获取args：<code>rosservice type &lt;/srv_name&gt; | rossrv show</code></li>
+</ul>
+<h4 id="测试效果"><a class="markdownIt-Anchor" href="#测试效果"></a> 测试效果</h4>
+<p><code>rosservice list</code>可以直接看到当前<code>turtlesim</code>相关的服务，例如：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">/clear  <span class="token comment"># 清除轨迹</span>
+/kill  <span class="token comment"># 杀死乌龟</span>
+/reset  <span class="token comment"># 重置乌龟</span>
+/spawn  <span class="token comment"># 下蛋, 初始化一个新的乌龟</span>
+<span class="token punctuation">..</span>.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>例如我们想创建一个新乌龟：首先确定新建乌龟需要什么参数？<code>rosservice info /spawn</code>可以看到</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Node: /turtlesim  <span class="token comment"># 所属节点</span>
+URI: rosrpc://yy-ASUS-TUF-Gaming-A15-FA507XV:41699  <span class="token comment"># 通讯的uri地址</span>
+Type: turtlesim/Spawn  <span class="token comment"># 通讯message类型</span>
+Args: x y theta name  <span class="token comment"># 通讯数据格式: 初始乌龟位置, 角度, 乌龟名字</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>新加一个乌龟: <code>rosservice call /spawn 5 5 3 &quot;turtle2&quot;</code>，查看当前node有哪些：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">rostopic list <span class="token operator">|</span> <span class="token function">grep</span> turtle
+<span class="token operator">></span> /turtle1/cmd_vel
+<span class="token operator">></span> /turtle1/color_sensor
+<span class="token operator">></span> /turtle1/pose
+<span class="token operator">></span> /turtle2/cmd_vel
+<span class="token operator">></span> /turtle2/color_sensor
+<span class="token operator">></span> /turtle2/pose<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>这样就可以同时控制两只龟龟了</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">rostopic pub <span class="token parameter variable">-r</span> <span class="token number">1</span> /turtle1/cmd_vel geometry_msgs/Twist <span class="token string">'[3, 0, 0]'</span> <span class="token string">'[0, 0, 2]'</span>
+rostopic pub <span class="token parameter variable">-r</span> <span class="token number">1</span> /turtle2/cmd_vel geometry_msgs/Twist <span class="token string">'[3, 0, 0]'</span> <span class="token string">'[0, 0, -2]'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p><img src=/figures/robotics/ros/ros1_1_7_double_turtles.png width=50%></img></p>
+<h4 id="rosparam参数服务器"><a class="markdownIt-Anchor" href="#rosparam参数服务器"></a> rosparam（参数服务器）</h4>
+<p><a target="_blank" rel="noopener" href="https://wiki.ros.org/Parameter%20Server">参考官方介绍</a>，这个可以看作一个全局变量存储器，可以用yaml格式存储：整型（integer）、浮点（float）、布尔（boolean）、字典（dictionaries）和列表（list）等数据类型（咋感觉就是Python的数据类型😂）</p>
+<p>常用的命令如下：</p>
+<ul>
+<li><code>rosparam set &lt;/param_name&gt; -- &lt;data&gt;</code>：设置参数，向<code>param_name</code>赋予新的yaml类型的<code>data</code></li>
+<li><code>rosparam get &lt;/param_name&gt;</code>：获取<code>param_name</code>参数</li>
+<li><code>rosparam load &lt;file_name.yaml&gt; [namespace]</code>：从文件<code>file_name.yaml</code>中加载参数到<code>namespace</code>关键字下</li>
+<li><code>rosparam dump &lt;file_name.yaml&gt; [namespace]</code>：向文件<code>file_name.yaml</code>中存储<code>namespace</code>关键字下的参数</li>
+<li><code>rosparam delete &lt;/param_name&gt;</code>：删除参数</li>
+<li><code>rosparam list</code>：列出参数名</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>我们可以设置新的参数<code>rosparam set /hi -- &quot;[1,2,&#123;'a':3, '3': 0.14&#125;,1.2]&quot;</code>，真是类似python的定义，字典的关键字必须是字符串</li>
+<li><code>rosparam list</code>可以查看当期已有的参数</li>
+<li><code>rosparam get /hi</code>获取参数中的信息（以yaml格式输出出来）</li>
+<li><code>rosparam dump test.yaml /turtlesim</code>保存当前的<code>/turtlesim</code>相关参数到<code>test.yaml</code>中</li>
+<li><code>rosparam load test.json /turtlesim</code>读取当前<code>test.yaml</code>中参数到<code>/turtlesim</code></li>
+<li><code>rosparam set /turtlesim/background_r 150</code>修改当前乌龟的背景色中的红色设成<code>150</code></li>
+<li><code>rosservice call /reset</code>重置下小乌龟环境，看到小乌龟背景板变色了！</li>
+</ul>
+<p><img src=/figures/robotics/ros/ros1_1_7_change_background.png width=50%></img></p>
+<h3 id="18-日志debug和roslaunch"><a class="markdownIt-Anchor" href="#18-日志debug和roslaunch"></a> 1.8 日志DEBUG和roslaunch</h3>
+<h4 id="日志debug"><a class="markdownIt-Anchor" href="#日志debug"></a> 日志DEBUG</h4>
+<p>安装rqt相关依赖包:</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">apt</span> <span class="token function">install</span> ros-noetic-rqt ros-noetic-rqt-common-plugins<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<p>先启动日志记录器<code>rosrun rqt_console rqt_console</code>，日志筛选器<code>rosrun rqt_logger_level rqt_logger_level</code>，这样就可以实时截取日志消息了。</p>
+<p>我们启动一个小乌龟node：<code>rosrun turtlesim turtlesim_node</code>，向其中添加一个小乌龟<code>rosservice call /spawn 1 5 0 &quot;&quot;</code>，在rqt_console上就可以看到显示的Info消息了。</p>
+<p>我们再让小乌龟去撞墙：<code>rostopic pub /turtle1/cmd_vel geometry_msgs/Twist -r 1 &quot;[1,0,0]&quot; &quot;[0,0,0]&quot;</code>，等到小乌龟撞到墙时候，就可以从rqt_console中看到很多Warn消息了。</p>
+<p>我们再看到刚才打开的<code>rqt_logger_level</code>，这个可以对node message按照日志等级进行筛选，如果我们将Nodes选为<code>/turtlesim</code>，Loggers选为<code>ros.turtlesim</code>，Levels选为<code>Debug</code>，我们就可以在rqt_console里面开到实时的乌龟位置了，日志的优先级从高到低分别为：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Fatal （致命）
+Error （错误）
+Warn  （警告）
+Info  （信息）
+Debug （调试）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>当将level设置为某一个优先级时，高于其优先级的logger就会被输出出来。</p>
+<h4 id="roslaunch启动两个同步小乌龟"><a class="markdownIt-Anchor" href="#roslaunch启动两个同步小乌龟"></a> roslaunch启动两个同步小乌龟</h4>
+<p>通过写<code>*.launch</code>文件我们可以对相同程序启动多个的node（通过不同namespace区分它们），还是回到上次我们创建的<code>tutorials</code>项目中去<code>roscd tutorials</code>，如果把他删了，或者忘记了<code>source</code>那么重新创建一下吧，<a href="/posts/19333/#%E5%88%9B%E5%BB%BA%E7%A9%BA%E9%A1%B9%E7%9B%AE">参考 - 创建空项目</a>。</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">roscd tutorials
+<span class="token function">mkdir</span> launch <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">cd</span> launch
+<span class="token function">vim</span> turtlemimic.launch  <span class="token comment"># 或者用vscode打开</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>把下面这段代码贴进去，分别是通过不同namespace启动相同程序<code>rosrun turtlesim turtlesim_node</code>两次（所有的<code>param, topic, node</code>名称前面，都会先加上<code>turtlesim1</code>或<code>turtlesim2</code>的命名）</p>
+<p>而下面的<code>rosrun turtlesim mimic</code>就是将<code>turtlesim1</code>收到的消息转发给<code>turtlesim2</code></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token comment">&lt;!-- launch tag开始 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>launch</span><span class="token punctuation">></span></span>
+
+  <span class="token comment">&lt;!-- 创建第一个小乌龟窗口, 通过对所有变量前加上命名空间"turtlesim1"
+       和后面一个小乌龟窗口进行区分 --></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>group</span> <span class="token attr-name">ns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sim<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim_node<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>group</span><span class="token punctuation">></span></span>
+
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>group</span> <span class="token attr-name">ns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sim<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim_node<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>group</span><span class="token punctuation">></span></span>
+
+  <span class="token comment">&lt;!-- 从turtlesim软件包中启动其二个名为mimic的程序,
+       通过这个程序转发turtlesim1的消息到turtlesim2中去 --></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mimic<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mimic<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>remap</span> <span class="token attr-name">from</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>input<span class="token punctuation">"</span></span> <span class="token attr-name">to</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim1/turtle1<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>remap</span> <span class="token attr-name">from</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>output<span class="token punctuation">"</span></span> <span class="token attr-name">to</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim2/turtle1<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>node</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>launch</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>保存文件，执行<code>roslaunch tutorials turtlemimic.launch</code>就可以看到启动的两个乌龟窗口了，再对<code>turtlesim1</code>发送指令就可以同时控制两个乌龟了<code>rostopic pub /turtlesim1/turtle1/cmd_vel geometry_msgs/Twist -r 1 '[2,0,0]' '[0,0,4]'</code></p>
+<blockquote>
+<p>一个问题就是为什么这里再对<code>turtlesim2</code>发送消息每一步走的距离就很短？</p>
+</blockquote>
+<p>终端输入<code>rqt</code>直接打开窗口，在上面选择<code>Plugins &gt; Introspection &gt; Node Graph</code>就可以打开一个节点图（当然直接输入<code>rqt_graph</code>也可以开），选择<code>Nodes/Topics (active)</code>就可以看到下图的效果：<br />
+<img src=/figures/robotics/ros/ros1_1_8_mimic_node_graph.png width=100%></img></p>
+<h3 id="19-msg和srv介绍"><a class="markdownIt-Anchor" href="#19-msg和srv介绍"></a> 1.9 msg和srv介绍</h3>
+<ul>
+<li>msg（就是发送到topic的通讯文件）：文本文件，用多个变量组成的数据格式来描述一个消息</li>
+<li>src（包含service通讯信息的文件）：描述一个service传输的数据，由request和response两个部分组成，分别为接受与发送的数据格式</li>
+</ul>
+<p>一般的项目中，我们将msg文件放在<code>msg/</code>文件夹下，srv文件放在<code>srv/</code>文件夹下。</p>
+<h4 id="msg"><a class="markdownIt-Anchor" href="#msg"></a> msg</h4>
+<p>就是简单的文本文件，每行由<code>类型 名称</code>组成，类型包含：</p>
+<ul>
+<li><code>int8, int16, int32, int64, uint[8|16|32|64]</code></li>
+<li><code>float32, float64</code></li>
+<li><code>string</code></li>
+<li><code>time, duration</code></li>
+<li>其他的msg文件（可嵌套）</li>
+<li>变长数组, 固定长度数组</li>
+</ul>
+<p>还有一个特殊的类型<code>Header</code>，通常我们会在msg定义的第一行写上，他会被自动解析为<code>std_msgs/msg/Header.msg</code>中的内容：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-msg" data-language="msg"><code class="language-msg">uint32 seq
+time stamp
+string frame_id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>例子，我们编辑之前<code>tutorials</code>的项目，创建<code>/catkin/src/tutorials/msg/test.msg</code>如下：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-msg" data-language="msg"><code class="language-msg">Header header
+string s
+float32[2] abc
+int32 i<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p><code>source /catkin/devel/setup.sh</code>执行<code>rosmsg show tutorials/test</code>就可以看到我们写的msg格式如下：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-msg" data-language="msg"><code class="language-msg">std_msgs&#x2F;Header header
+  uint32 seq
+  time stamp
+  string frame_id
+string s
+float32[2] abc
+int32 i<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>想要在代码中使用到这个<code>test.msg</code>数据格式，需要在编译时支持转化，修改如下文件：</p>
+<ul>
+<li>修改<code>package.xml</code>：解开以下两行的注释（分别用于生成消息和运行时接收消息）  <figure><div class="code-wrapper"><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>build_depend</span><span class="token punctuation">></span></span>message_generation<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>build_depend</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>exec_depend</span><span class="token punctuation">></span></span>message_runtime<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>exec_depend</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+</li>
+<li>修改<code>CMakeLists.xml</code>（<code>src/tutorials</code>下的）：
+<ol>
+<li><code>find_package(...)</code>中加入<code>message_generation</code></li>
+<li><code>catkini_package(...)</code>中找到<code>CATKIN_DEPENDS</code>后加入<code>message_runtime</code>（这个是包依赖关系，如果这个包被其他包调用了，那么会自动导入message_runtime包）</li>
+<li>找到<code>add_message_files(...)</code>，将其改为</li>
+</ol>
+  <figure><div class="code-wrapper"><pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token function">add_message_files</span><span class="token punctuation">(</span>
+  FILES
+  test.msg  <span class="token comment"># 你的msg文件名</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<ol start="4">
+<li>找到<code>generate_messages(...)</code>解开注释，如下</li>
+</ol>
+  <figure><div class="code-wrapper"><pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token function">generate_messages</span><span class="token punctuation">(</span>
+  DEPENDENCIES
+  std_msgs
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+</li>
+</ul>
+<p>OK，让我们重新编译一下<code>cd /catkin &amp;&amp; catkin_make</code>，编译完成后就可以找到msg转码文件了：</p>
+<ul>
+<li>C++：<code>/catkin/devel/include/tutorials/test.h</code></li>
+<li>Python：<code>/catkin/devel/lib/python3/dist-packages/tutorials/msg/_test.py</code><br />
+这样我们的后续项目代码就可以解包和发包了</li>
+</ul>
+<h4 id="srv"><a class="markdownIt-Anchor" href="#srv"></a> srv</h4>
+<p>我们创建文件夹<code>roscd tutorials &amp;&amp; mkdir srv</code>，直接从另一个包里面复制现有的srv：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">roscd tutorials/src/
+roscp rospy_tutorials AddTwoInts.srv test_srv.srv
+
+<span class="token function">cat</span> test_srv.srv
+<span class="token operator">></span> int64 a  <span class="token comment"># 发送的数据格式</span>
+<span class="token operator">></span> int64 b
+<span class="token operator">></span> ---
+<span class="token operator">></span> int64 <span class="token function">sum</span>  <span class="token comment"># 接受的数据格式</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>现在可以用<code>rossrv show tutorials/test_srv.srv</code>来看看是否识别到了我们的service文件，可以看到输出和<code>test_srv.srv</code>文件内容一致。</p>
+<p>下面类似msg的流程，让代码支持<code>test_srv.srv</code>：</p>
+<ul>
+<li>修改<code>package.xml</code>：解开以下两行的注释（和msg相同）  <figure><div class="code-wrapper"><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>build_depend</span><span class="token punctuation">></span></span>message_generation<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>build_depend</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>exec_depend</span><span class="token punctuation">></span></span>message_runtime<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>exec_depend</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+</li>
+<li>修改<code>CMakeLists.xml</code>（<code>src/tutorials</code>下的）：
+<ol>
+<li><code>find_package(...)</code>中加入<code>message_generation</code>（和msg相同）</li>
+<li>找到<code>add_service_files(...)</code>，将其改为</li>
+</ol>
+  <figure><div class="code-wrapper"><pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token function">add_service_files</span><span class="token punctuation">(</span>
+  FILES
+  test_srv.srv  <span class="token comment"># 你的srv文件名，注意不要和*.msg重名!!!</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<ol start="4">
+<li>找到<code>generate_messages(...)</code>解开注释，如下</li>
+</ol>
+  <figure><div class="code-wrapper"><pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token function">generate_messages</span><span class="token punctuation">(</span>
+  DEPENDENCIES
+  std_msgs
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+</li>
+</ul>
+<p>OK，类似地让我们重新编译一下<code>cd /catkin &amp;&amp; catkin_make</code>，编译完成后就可以找到srv转码文件了：</p>
+<ul>
+<li>C++：<code>/catkin/devel/include/tutorials/[test_srv.h, test_srvRequest.h, test_srvResponse.h]</code></li>
+<li>Python：<code>/catkin/devel/lib/python3/dist-packages/tutorials/srv/_test_srv.py</code><br />
+这样我们的后续项目代码就可以使用srv接受和发送消息了</li>
+</ul>
+<h3 id="110-ros-python脚本"><a class="markdownIt-Anchor" href="#110-ros-python脚本"></a> 1.10 ROS Python脚本</h3>
+<h4 id="运行python-script方法"><a class="markdownIt-Anchor" href="#运行python-script方法"></a> 运行Python script方法</h4>
+<p>在<code>/catkin/src/tutorials/scripts/</code>下面创建我们的代码<code>tmp.py</code>，导入<code>import rospy</code>来和ros进行交互</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> rospy
+<span class="token comment"># 这两个没有自定义就可以删掉</span>
+<span class="token keyword">from</span> tutorials<span class="token punctuation">.</span>msg <span class="token keyword">import</span> test  <span class="token comment"># 这个是上文中自定义的message</span>
+<span class="token keyword">from</span> tutorials<span class="token punctuation">.</span>srv <span class="token keyword">import</span> test_srv  <span class="token comment"># 这个是上文中自定义的serve</span>
+
+<span class="token keyword">def</span> <span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  topics <span class="token operator">=</span> rospy<span class="token punctuation">.</span>get_published_topics<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 显示当前可用的topics</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span>topics<span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+  play<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>如果有自定义的<code>/srv</code>或者<code>/msg</code>下定义的数据格式，就需要按照上文中<a href="/posts/19333/#19-msg%E5%92%8Csrv%E4%BB%8B%E7%BB%8D">msg和srv介绍</a>中介绍的编译方法，修改<code>package.xml, CMakeLists.txt</code>文件，并再修改<code>CMakeLists.txt</code>中的</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token comment"># 加这个就是可以编译后让rosrun找到python脚本</span>
+<span class="token comment"># 如果想要直接测试代码也可以不加，完成项目时候还是全加上吧</span>
+<span class="token function">catkin_install_python</span><span class="token punctuation">(</span>PROGRAMS
+  scripts/easy_play_turtle.py
+  DESTINATION <span class="token punctuation">$&#123;</span>CATKIN_PACKAGE_BIN_DESTINATION<span class="token punctuation">&#125;</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>最后用<code>catkin_make</code>编译即可。</p>
+<ol>
+<li>直接运行代码：
+<ol>
+<li>如果没有自定义的依赖包，直接在终端运行就行了</li>
+<li>如果要用到当前包定义的数据类型，先<code>source /catkin/devel/setup.sh</code>一下，添加路径，就可以直接运行了</li>
+</ol>
+ <div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        VSCode无法找到自定义库位置
+    </div>
+    <div class='spoiler-content'>
+        <p><code>ctrl+shift+p</code>输入<code>workspace settings</code>回车，进入到工作区的配置文件，添加如下路径：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">&#123;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
+  <span class="token string">"python.analysis.extraPaths"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"/opt/ros/noetic/lib/python3/dist-packages"</span><span class="token punctuation">,</span>  <span class="token comment"># ros的python库文件</span>
+    <span class="token string">"/catkin/devel/lib/python3/dist-packages"</span><span class="token punctuation">,</span>  <span class="token comment"># 自定义仓库的python文件</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+
+    </div>
+</div>
+</li>
+<li>使用<code>rosrun</code>运行，例如上面的代码叫<code>easy_play_turtle.py</code>，直接运行<code>rosrun tutorials easy_play_turtle.py</code>即可。</li>
+</ol>
+<h4 id="测试msg和srv"><a class="markdownIt-Anchor" href="#测试msg和srv"></a> 测试msg和srv</h4>
+<p>我们需要在<code>/catkin/src/tutorials/scripts/</code>中创建如下三个代码：</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        talker.py
+    </div>
+    <div class='spoiler-content'>
+        <figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> rospy<span class="token punctuation">,</span> os
+os<span class="token punctuation">.</span>environ<span class="token punctuation">[</span><span class="token string">'ROSCONSOLE_FORMAT'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'[$&#123;severity&#125;] [$&#123;time:%Y-%m-%d %H:%M:%S&#125;]: $&#123;message&#125;'</span>
+<span class="token keyword">from</span> std_msgs<span class="token punctuation">.</span>msg <span class="token keyword">import</span> Header
+<span class="token keyword">from</span> tutorials<span class="token punctuation">.</span>msg <span class="token keyword">import</span> test
+<span class="token keyword">from</span> tutorials<span class="token punctuation">.</span>srv <span class="token keyword">import</span> test_srv<span class="token punctuation">,</span> test_srvRequest<span class="token punctuation">,</span> test_srvResponse
+<span class="token keyword">from</span> threading <span class="token keyword">import</span> Thread
+<span class="token keyword">from</span> typing <span class="token keyword">import</span> List
+
+<span class="token keyword">def</span> <span class="token function">talker</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  counter <span class="token operator">=</span> <span class="token number">0</span>
+  pub <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Publisher<span class="token punctuation">(</span><span class="token string">'my_topic'</span><span class="token punctuation">,</span> test<span class="token punctuation">,</span> queue_size<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span>
+  rate <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Rate<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token comment"># 10hz</span>
+  <span class="token keyword">while</span> <span class="token keyword">not</span> rospy<span class="token punctuation">.</span>is_shutdown<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    header <span class="token operator">=</span> Header<span class="token punctuation">(</span>seq<span class="token operator">=</span><span class="token number">123</span><span class="token punctuation">,</span> stamp<span class="token operator">=</span>rospy<span class="token punctuation">.</span>Time<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> frame_id<span class="token operator">=</span><span class="token string">'id=1'</span><span class="token punctuation">)</span>
+    counter <span class="token operator">+=</span> <span class="token number">1</span>
+    info <span class="token operator">=</span> <span class="token punctuation">[</span>header<span class="token punctuation">,</span> <span class="token string">'str'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> counter<span class="token punctuation">]</span>
+    info <span class="token operator">=</span> test<span class="token punctuation">(</span><span class="token operator">*</span>info<span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span>info<span class="token punctuation">)</span>
+    pub<span class="token punctuation">.</span>publish<span class="token punctuation">(</span>info<span class="token punctuation">)</span>
+    rate<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">adder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>req<span class="token punctuation">:</span> test_srvRequest<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># service process handle</span>
+    ret <span class="token operator">=</span> test_srvResponse<span class="token punctuation">(</span>req<span class="token punctuation">.</span>a <span class="token operator">+</span> req<span class="token punctuation">.</span>b<span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"[ADDer] [</span><span class="token interpolation"><span class="token punctuation">&#123;</span>req<span class="token punctuation">.</span>a<span class="token punctuation">&#125;</span></span><span class="token string"> + </span><span class="token interpolation"><span class="token punctuation">&#123;</span>req<span class="token punctuation">.</span>b<span class="token punctuation">&#125;</span></span><span class="token string"> = </span><span class="token interpolation"><span class="token punctuation">&#123;</span>ret<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">&#125;</span></span><span class="token string">]"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> ret
+  srv <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Service<span class="token punctuation">(</span><span class="token string">'my_service'</span><span class="token punctuation">,</span> test_srv<span class="token punctuation">,</span> add<span class="token punctuation">)</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Adder is ready!"</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+  rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'node_talker'</span><span class="token punctuation">,</span> anonymous<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+  threads<span class="token punctuation">:</span> List<span class="token punctuation">[</span>Thread<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token keyword">try</span><span class="token punctuation">:</span>
+    threads<span class="token punctuation">.</span>append<span class="token punctuation">(</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>talker<span class="token punctuation">,</span> daemon<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    threads<span class="token punctuation">.</span>append<span class="token punctuation">(</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>adder<span class="token punctuation">,</span> daemon<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> thread <span class="token keyword">in</span> threads<span class="token punctuation">:</span> thread<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> thread <span class="token keyword">in</span> threads<span class="token punctuation">:</span> thread<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">except</span> rospy<span class="token punctuation">.</span>ROSInterruptException<span class="token punctuation">:</span>
+    <span class="token keyword">pass</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+    </div>
+</div>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        topic_listener.py
+    </div>
+    <div class='spoiler-content'>
+        <figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> rospy<span class="token punctuation">,</span> os
+os<span class="token punctuation">.</span>environ<span class="token punctuation">[</span><span class="token string">'ROSCONSOLE_FORMAT'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'[$&#123;severity&#125;] [$&#123;time:%Y-%m-%d %H:%M:%S&#125;]: $&#123;message&#125;'</span>
+<span class="token keyword">from</span> tutorials<span class="token punctuation">.</span>msg <span class="token keyword">import</span> test
+
+
+<span class="token keyword">def</span> <span class="token function">callback</span><span class="token punctuation">(</span>data<span class="token punctuation">:</span> test<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>rospy<span class="token punctuation">.</span>get_caller_id<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string"> I heard:"</span></span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  Header: seq=</span><span class="token interpolation"><span class="token punctuation">&#123;</span>data<span class="token punctuation">.</span>header<span class="token punctuation">.</span>seq<span class="token punctuation">&#125;</span></span><span class="token string">, stamp=</span><span class="token interpolation"><span class="token punctuation">&#123;</span>data<span class="token punctuation">.</span>header<span class="token punctuation">.</span>stamp<span class="token punctuation">.</span>to_sec<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">, frame_id=</span><span class="token interpolation"><span class="token punctuation">&#123;</span>data<span class="token punctuation">.</span>header<span class="token punctuation">.</span>frame_id<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  String: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>data<span class="token punctuation">.</span>s<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  Float32[2]: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>data<span class="token punctuation">.</span>abc<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  Int32: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>data<span class="token punctuation">.</span>i<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">listener</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string">'listener'</span><span class="token punctuation">,</span> anonymous<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>Subscriber<span class="token punctuation">(</span><span class="token string">'my_topic'</span><span class="token punctuation">,</span> test<span class="token punctuation">,</span> callback<span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>spin<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    listener<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+    </div>
+</div>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        add_two_ints_client.py
+    </div>
+    <div class='spoiler-content'>
+        <figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+<span class="token keyword">import</span> rospy
+<span class="token keyword">from</span> tutorials<span class="token punctuation">.</span>srv <span class="token keyword">import</span> AddTwoInts<span class="token punctuation">,</span> AddTwoIntsResponse
+
+<span class="token keyword">def</span> <span class="token function">add_two_ints_client</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  rospy<span class="token punctuation">.</span>wait_for_service<span class="token punctuation">(</span><span class="token string">'my_service'</span><span class="token punctuation">)</span>
+  <span class="token keyword">try</span><span class="token punctuation">:</span>
+    add_two_ints <span class="token operator">=</span> rospy<span class="token punctuation">.</span>ServiceProxy<span class="token punctuation">(</span><span class="token string">'my_service'</span><span class="token punctuation">,</span> AddTwoInts<span class="token punctuation">)</span>
+    resp1<span class="token punctuation">:</span> AddTwoIntsResponse <span class="token operator">=</span> add_two_ints<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> resp1<span class="token punctuation">.</span><span class="token builtin">sum</span>
+  <span class="token keyword">except</span> rospy<span class="token punctuation">.</span>ServiceException <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Service call failed: %s"</span><span class="token operator">%</span>e<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">usage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token keyword">return</span> <span class="token string">"%s [x y]"</span><span class="token operator">%</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+  <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">:</span>
+    x <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    y <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+  <span class="token keyword">else</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>usage<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    sys<span class="token punctuation">.</span>exit<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Requesting %s+%s"</span><span class="token operator">%</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"%s + %s = %s"</span><span class="token operator">%</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> add_two_ints_client<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+    </div>
+</div>
+<p>使用方法：先启动<code>talker.py</code>，再启动<code>topic_listener.py</code>接受消息，或者启动<code>add_two_ints_client.py 3 5</code>后面两个数字为要进行加和的数据。</p>
+<p>他们作用分别为：</p>
+<ol>
+<li><code>talker.py</code>：向一个topic发送消息，并且一个用于做加法的service，这两个函数Thread同时运行</li>
+<li><code>topic_listener.py</code>：从topic中接受消息，并打印出来</li>
+<li><code>add_two_ints_client.py</code>：可以通过命令行输入的方式，向做加法的service中发送加法请求，并接收消息</li>
+</ol>
+<blockquote>
+<p>使用到<code>rospy.log*()</code>的代码都加上了，这一行，不然他默认的time时钟就是一个时间戳，没有任何可读性😵‍💫</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">os<span class="token punctuation">.</span>environ<span class="token punctuation">[</span><span class="token string">'ROSCONSOLE_FORMAT'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'[$&#123;severity&#125;] [$&#123;time:%Y-%m-%d %H:%M:%S&#125;]: $&#123;message&#125;'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+</blockquote>
+<p>下面分别分析上述三个代码块：</p>
+<p><strong><code>talker.py</code></strong></p>
+<h5 id="node初始化"><a class="markdownIt-Anchor" href="#node初始化"></a> node初始化</h5>
+<ol>
+<li><code>rospy.init_node('node_talker', anonymous=True)</code>：如果当前Python进程想加入ROS中就要先创建一个属于自己的node，这里节点名字叫<code>node_talker</code>（<code>anonymous</code>会在你的节点后面加上时间戳，节点最好就别重名，否则之前重名的节点就被kill了）</li>
+</ol>
+<h5 id="topic-publish"><a class="markdownIt-Anchor" href="#topic-publish"></a> topic publish</h5>
+<ol start="2">
+<li><code>pub = rospy.Publisher('my_topic', test, queue_size=10)</code>：向topic publish消息
+<ul>
+<li><code>'my_topic'</code>：我们向这个名字的topic发送消息</li>
+<li><code>test</code>：定义发送的消息格式（我们在<code>msg/test.msg</code>中定义的），当<code>my_topic</code>topic还没有创建时，它会被设置为<code>test</code>类型，否则，就会检查当前的类型是否和<code>my_topic</code>已有的类型相同，否则报错</li>
+<li><code>queue_size=10</code>：设置topic处理的消息最大缓存长度，注意，这个处理是将数据从网络中读取到内存中所用的速度，通常不会成为瓶颈（也就是发送频率不会高于内存写入频率），因此这个值写成<code>100,1000</code>都可以，不写可能不是很安全</li>
+</ul>
+</li>
+<li><code>rate = rospy.Rate(10)</code>：和<code>rate.sleep()</code>结合使用，表示以10hz的频率进行休息，保证消息发送的频率</li>
+<li><code>pub.publish</code>：假设<code>pub</code>对应当前topic的message类型为<code>test</code>，其包含两个变量<code>int32 a</code>和<code>int32 b</code>，那么我们可以从<code>from *.msg import test</code>将这个数据类型读入进来，这里有三种不同的publish写法：
+<ul>
+<li><code>pub.publish(test(a=10,b=20))</code>：直接实例化消息</li>
+<li><code>pub.publish(10, 20)</code>：传入序列解包（<strong>不包含message的嵌套</strong>，不能递归解包），等价于<code>pub.publish(*args) = pub.publish(test(*args))</code></li>
+<li><code>pub.publish(a=10, b=20)</code>：传入字典解包，等价于<code>pub.publish(**kwargs) = pub.publish(test(**kwargs))</code></li>
+</ul>
+<blockquote>
+<p>本质上，都是先实例化后再发送</p>
+</blockquote>
+</li>
+</ol>
+<h5 id="日志处理"><a class="markdownIt-Anchor" href="#日志处理"></a> 日志处理</h5>
+<ol start="5">
+<li><code>rospy.loginfo(...)</code>：会将日志信息通过<code>/rosout</code>topic输出(<a target="_blank" rel="noopener" href="http://wiki.ros.org/rospy/Overview/Logging">参考</a>)，还有<code>rospy.logwarn(...), logerror(...), ...</code>
+<blockquote>
+<p>代码通过<code>/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/rosout.py</code>中的<code>_rosout</code>函数实现</p>
+</blockquote>
+</li>
+</ol>
+<h5 id="service初始化-response"><a class="markdownIt-Anchor" href="#service初始化-response"></a> service初始化 (response)</h5>
+<ol start="6">
+<li><code>rospy.Service('my_service', test_srv, add)</code>：创建一个名为<code>my_service</code>的service，使用的数据格式为<code>test_srv</code>，<code>add</code>是对receive的数据进行处理的函数（得到response返回给request）</li>
+</ol>
+<hr />
+<p><strong><code>topic_listener.py</code></strong></p>
+<h5 id="topic-subscribe"><a class="markdownIt-Anchor" href="#topic-subscribe"></a> topic subscribe</h5>
+<ol>
+<li><code>rospy.Subscriber('my_topic', test, callback)</code>：和<code>rospy.Service</code>类似
+<ul>
+<li><code>'my_topic'</code>：接收topic的名称</li>
+<li><code>test</code>：topic的数据类型</li>
+<li><code>callback</code>：处理接收到消息的函数</li>
+</ul>
+</li>
+<li><code>rospy.spin()</code>：类似<code>cv2.wait()</code>会一直进行等待，不过这个是等到强制关闭这个进程</li>
+</ol>
+<hr />
+<p><strong><code>add_two_ints_client.py</code></strong></p>
+<h5 id="service-request"><a class="markdownIt-Anchor" href="#service-request"></a> service request</h5>
+<ol>
+<li><code>rospy.wait_for_service('my_service')</code>：等待名为<code>my_service</code>的service被创建
+<blockquote>
+<p>类似地，等待topic的函数为<code>rospy.wait_for_message(topic_name)</code></p>
+</blockquote>
+</li>
+<li><code>req = rospy.ServiceProxy('my_service', AddTwoInts)</code>：创建request请求函数
+<ul>
+<li>service名称为<code>'my_service'</code></li>
+<li>srv数据类型为<code>AddTwoInts</code></li>
+<li>返回的结果就是一个可直接调用函数<code>req</code>，使用方法就是类似<code>pub.publish</code>的方法，将参数直接实例化或者将实例化的参数以序列或者字典形式输入进去，例如<code>req(x, y) &lt;=&gt; req(AddTwoIntsRequest(x, y))</code>，调用返回的数据类型为<code>AddTwoIntsResponse</code>，也就是srv类型后面加了个<code>Response</code></li>
+</ul>
+</li>
+</ol>
+<h4 id="pid控制小乌龟绘制图形"><a class="markdownIt-Anchor" href="#pid控制小乌龟绘制图形"></a> PID控制小乌龟绘制图形</h4>
+<p>接下来，这里我们直接开始写Python代码来用PID控制小乌龟的线速度<code>linear.x</code>和角速度<code>angular.z</code>，首先启动我们的小乌龟节点：<code>rosrun turtlesim turtlesim_node</code>，然后创建文件<code>.../tutorials/scripts/play_turtle.py</code></p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        play_turtle.py
+    </div>
+    <div class='spoiler-content'>
+        <figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> rospy
+<span class="token keyword">import</span> os
+<span class="token keyword">from</span> geometry_msgs<span class="token punctuation">.</span>msg <span class="token keyword">import</span> Twist
+<span class="token keyword">from</span> turtlesim<span class="token punctuation">.</span>msg <span class="token keyword">import</span> Pose
+<span class="token keyword">from</span> std_srvs<span class="token punctuation">.</span>srv <span class="token keyword">import</span> Empty
+<span class="token keyword">from</span> turtlesim<span class="token punctuation">.</span>srv <span class="token keyword">import</span> Kill<span class="token punctuation">,</span> Spawn
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> math
+<span class="token keyword">import</span> tyro
+<span class="token keyword">from</span> dataclasses <span class="token keyword">import</span> dataclass
+os<span class="token punctuation">.</span>environ<span class="token punctuation">[</span><span class="token string">'ROSCONSOLE_FORMAT'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'[$&#123;severity&#125;] [$&#123;time:%Y-%m-%d %H:%M:%S&#125;]: $&#123;message&#125;'</span>
+
+<span class="token decorator annotation punctuation">@dataclass</span>
+<span class="token keyword">class</span> <span class="token class-name">Args</span><span class="token punctuation">:</span>
+  fig_id<span class="token punctuation">:</span> <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token triple-quoted-string string">"""the id of figure"""</span>
+  reset<span class="token punctuation">:</span> <span class="token builtin">bool</span> <span class="token operator">=</span> <span class="token boolean">True</span>
+  <span class="token triple-quoted-string string">"""If True, the /reset topic will be traggled"""</span>
+  name<span class="token punctuation">:</span> <span class="token builtin">str</span> <span class="token operator">=</span> <span class="token string">"turtle1"</span>
+  <span class="token triple-quoted-string string">"""The name of turtle in turtlesim"""</span>
+  hz<span class="token punctuation">:</span> <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">10</span>
+  <span class="token triple-quoted-string string">"""The hz of publish rate"""</span>
+  <span class="token comment"># 1~4hz GG</span>
+  <span class="token comment"># >= 5hz interesting PID control</span>
+  <span class="token comment"># 10hz 34.475s</span>
+  <span class="token comment"># 100hz 35.738s</span>
+  <span class="token comment"># unlimited 35.885s</span>
+
+args <span class="token operator">=</span> tyro<span class="token punctuation">.</span>cli<span class="token punctuation">(</span>Args<span class="token punctuation">,</span> return_unknown_args<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+
+<span class="token comment"># preprocess fig, turtle_name</span>
+ts <span class="token operator">=</span> np<span class="token punctuation">.</span>linspace<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>pi<span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span>
+xs <span class="token operator">=</span> <span class="token number">16</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>sin<span class="token punctuation">(</span>ts<span class="token punctuation">)</span> <span class="token operator">**</span> <span class="token number">3</span>
+ys <span class="token operator">=</span> <span class="token number">13</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>cos<span class="token punctuation">(</span>ts<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">5</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>cos<span class="token punctuation">(</span><span class="token number">2</span><span class="token operator">*</span>ts<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">2</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>cos<span class="token punctuation">(</span><span class="token number">3</span><span class="token operator">*</span>ts<span class="token punctuation">)</span> <span class="token operator">-</span> np<span class="token punctuation">.</span>cos<span class="token punctuation">(</span><span class="token number">4</span><span class="token operator">*</span>ts<span class="token punctuation">)</span>
+fig <span class="token operator">=</span> np<span class="token punctuation">.</span>concatenate<span class="token punctuation">(</span><span class="token punctuation">[</span>xs<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> ys<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> args<span class="token punctuation">.</span>fig_id <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+  scale <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+  translation <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2.5</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">elif</span> args<span class="token punctuation">.</span>fig_id <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+  scale <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+  translation <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> args<span class="token punctuation">.</span>fig_id <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+  <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    fig<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>fig<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> fig<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">min</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token punctuation">(</span>fig<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> fig<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">min</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  fig <span class="token operator">=</span> fig <span class="token operator">*</span> scale<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> translation<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+turtle_name <span class="token operator">=</span> args<span class="token punctuation">.</span>name
+
+<span class="token keyword">class</span> <span class="token class-name">PID</span><span class="token punctuation">:</span>
+  <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> Kp<span class="token punctuation">,</span> Ki<span class="token punctuation">,</span> Kd<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    self<span class="token punctuation">.</span>Kp<span class="token punctuation">,</span> self<span class="token punctuation">.</span>Ki<span class="token punctuation">,</span> self<span class="token punctuation">.</span>Kd <span class="token operator">=</span> Kp<span class="token punctuation">,</span> Ki<span class="token punctuation">,</span> Kd
+    self<span class="token punctuation">.</span>integral<span class="token punctuation">,</span> self<span class="token punctuation">.</span>prev_error <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
+
+  <span class="token keyword">def</span> <span class="token function">__call__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    self<span class="token punctuation">.</span>integral <span class="token operator">+=</span> error
+    derivative <span class="token operator">=</span> error <span class="token operator">-</span> self<span class="token punctuation">.</span>prev_error
+    ret <span class="token operator">=</span> <span class="token punctuation">(</span>
+      self<span class="token punctuation">.</span>Kp <span class="token operator">*</span> error <span class="token operator">+</span>
+      self<span class="token punctuation">.</span>Ki <span class="token operator">*</span> self<span class="token punctuation">.</span>integral <span class="token operator">+</span>
+      self<span class="token punctuation">.</span>Kd <span class="token operator">*</span> derivative
+    <span class="token punctuation">)</span>
+    self<span class="token punctuation">.</span>prev_error <span class="token operator">=</span> error
+    <span class="token keyword">return</span> ret
+
+  <span class="token keyword">def</span> <span class="token function">reset</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    self<span class="token punctuation">.</span>integral<span class="token punctuation">,</span> self<span class="token punctuation">.</span>prev_error <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
+
+K_linear_p <span class="token operator">=</span> <span class="token number">1.5</span>
+K_linear_i <span class="token operator">=</span> <span class="token number">0e-6</span>
+K_linear_d <span class="token operator">=</span> <span class="token number">0.1</span>
+linear_pid <span class="token operator">=</span> PID<span class="token punctuation">(</span>K_linear_p<span class="token punctuation">,</span> K_linear_i<span class="token punctuation">,</span> K_linear_d<span class="token punctuation">)</span>
+
+K_angular_p <span class="token operator">=</span> <span class="token number">8.0</span>
+K_angular_i <span class="token operator">=</span> <span class="token number">0.00</span>
+K_angular_d <span class="token operator">=</span> <span class="token number">0.1</span>
+angular_pid <span class="token operator">=</span> PID<span class="token punctuation">(</span>K_angular_p<span class="token punctuation">,</span> K_angular_i<span class="token punctuation">,</span> K_angular_d<span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Player</span><span class="token punctuation">:</span>
+
+  <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    self<span class="token punctuation">.</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>y<span class="token punctuation">,</span> self<span class="token punctuation">.</span>theta <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
+
+    rospy<span class="token punctuation">.</span>init_node<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'play_</span><span class="token interpolation"><span class="token punctuation">&#123;</span>turtle_name<span class="token punctuation">&#125;</span></span><span class="token string">'</span></span><span class="token punctuation">)</span>
+    srv_reset <span class="token operator">=</span> rospy<span class="token punctuation">.</span>ServiceProxy<span class="token punctuation">(</span><span class="token string">'/reset'</span><span class="token punctuation">,</span> Empty<span class="token punctuation">)</span>
+    srv_kill <span class="token operator">=</span> rospy<span class="token punctuation">.</span>ServiceProxy<span class="token punctuation">(</span><span class="token string">'/kill'</span><span class="token punctuation">,</span> Kill<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> args<span class="token punctuation">.</span>reset<span class="token punctuation">:</span>
+      srv_reset<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+      rospy<span class="token punctuation">.</span>loginfo<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Try to kill </span><span class="token interpolation"><span class="token punctuation">&#123;</span>turtle_name<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+      srv_kill<span class="token punctuation">(</span>turtle_name<span class="token punctuation">)</span>
+    <span class="token keyword">except</span><span class="token punctuation">:</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    srv_spawn <span class="token operator">=</span> rospy<span class="token punctuation">.</span>ServiceProxy<span class="token punctuation">(</span><span class="token string">'/spawn'</span><span class="token punctuation">,</span> Spawn<span class="token punctuation">)</span>
+    srv_spawn<span class="token punctuation">(</span>x<span class="token operator">=</span>fig<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> y<span class="token operator">=</span>fig<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> theta<span class="token operator">=</span>math<span class="token punctuation">.</span>pi<span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">,</span> name<span class="token operator">=</span>turtle_name<span class="token punctuation">)</span>
+    rospy<span class="token punctuation">.</span>Subscriber<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>turtle_name<span class="token punctuation">&#125;</span></span><span class="token string">/pose'</span></span><span class="token punctuation">,</span> Pose<span class="token punctuation">,</span> self<span class="token punctuation">.</span>callback<span class="token punctuation">)</span>
+    self<span class="token punctuation">.</span>pub <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Publisher<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>turtle_name<span class="token punctuation">&#125;</span></span><span class="token string">/cmd_vel"</span></span><span class="token punctuation">,</span> Twist<span class="token punctuation">,</span> queue_size<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">def</span> <span class="token function">go_target</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Target:"</span><span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+    rate <span class="token operator">=</span> rospy<span class="token punctuation">.</span>Rate<span class="token punctuation">(</span>args<span class="token punctuation">.</span>hz<span class="token punctuation">)</span>
+    <span class="token keyword">while</span> <span class="token keyword">not</span> rospy<span class="token punctuation">.</span>is_shutdown<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+      target <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span>x<span class="token punctuation">,</span> y<span class="token punctuation">]</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span><span class="token builtin">float</span><span class="token punctuation">)</span>
+      now <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span>self<span class="token punctuation">.</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>y<span class="token punctuation">]</span><span class="token punctuation">)</span>
+      dis_error <span class="token operator">=</span> np<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">(</span>target <span class="token operator">-</span> now<span class="token punctuation">)</span> <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">**</span> <span class="token number">0.5</span>
+
+      target_theta <span class="token operator">=</span> math<span class="token punctuation">.</span>atan2<span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">(</span>target <span class="token operator">-</span> now<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+      ang_error <span class="token operator">=</span> <span class="token punctuation">(</span>target_theta <span class="token operator">-</span> self<span class="token punctuation">.</span>theta <span class="token operator">+</span> math<span class="token punctuation">.</span>pi<span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">*</span> math<span class="token punctuation">.</span>pi<span class="token punctuation">)</span> <span class="token operator">-</span> math<span class="token punctuation">.</span>pi
+
+      vel_msg <span class="token operator">=</span> Twist<span class="token punctuation">(</span><span class="token punctuation">)</span>
+      vel_msg<span class="token punctuation">.</span>linear<span class="token punctuation">.</span>x <span class="token operator">=</span> linear_pid<span class="token punctuation">(</span>dis_error<span class="token punctuation">)</span>
+      vel_msg<span class="token punctuation">.</span>angular<span class="token punctuation">.</span>z <span class="token operator">=</span> angular_pid<span class="token punctuation">(</span>ang_error<span class="token punctuation">)</span>
+      self<span class="token punctuation">.</span>pub<span class="token punctuation">.</span>publish<span class="token punctuation">(</span>vel_msg<span class="token punctuation">)</span>
+      <span class="token keyword">if</span> dis_error <span class="token operator">&lt;</span> <span class="token number">0.1</span><span class="token punctuation">:</span> <span class="token keyword">break</span>
+      rate<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">def</span> <span class="token function">callback</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> data<span class="token punctuation">:</span> Pose<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    self<span class="token punctuation">.</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>y<span class="token punctuation">,</span> self<span class="token punctuation">.</span>theta <span class="token operator">=</span> data<span class="token punctuation">.</span>x<span class="token punctuation">,</span> data<span class="token punctuation">.</span>y<span class="token punctuation">,</span> data<span class="token punctuation">.</span>theta
+
+  <span class="token keyword">def</span> <span class="token function">run</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> pos <span class="token keyword">in</span> fig<span class="token punctuation">:</span>
+      self<span class="token punctuation">.</span>go_target<span class="token punctuation">(</span><span class="token operator">*</span>pos<span class="token punctuation">)</span>
+      linear_pid<span class="token punctuation">.</span>reset<span class="token punctuation">(</span><span class="token punctuation">)</span>
+      angular_pid<span class="token punctuation">.</span>reset<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+  player <span class="token operator">=</span> Player<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  player<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+    </div>
+</div>
+<p><code>catkin_make</code>编译完成后分别执行</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">rosrun tutorials play_turtle.py --fig-id <span class="token number">0</span> <span class="token parameter variable">--reset</span> <span class="token parameter variable">--name</span> turtle1  <span class="token comment"># 终端1</span>
+rosrun tutorials play_turtle.py --fig-id <span class="token number">1</span> --no-reset <span class="token parameter variable">--name</span> turtle2  <span class="token comment"># 终端2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p>或者我们可以在<code>launch/</code>文件夹下写一个<code>draw_double_love.launch</code>启动文件，然后一键启动<code>roslaunch tutorials draw_double_love.launch</code>：</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        launch/draw_double_love.launch
+    </div>
+    <div class='spoiler-content'>
+        <figure><div class="code-wrapper"><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>launch</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sim<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>turtlesim_node<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>group</span> <span class="token attr-name">ns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>play1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>tutorials<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>play<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>play_turtle.py<span class="token punctuation">"</span></span>
+      <span class="token attr-name">args</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>--fig-id 0 --no-reset --name turtle1<span class="token punctuation">"</span></span>
+      <span class="token attr-name">output</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>screen<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>group</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>group</span> <span class="token attr-name">ns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>play2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>node</span> <span class="token attr-name">pkg</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>tutorials<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>play<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>play_turtle.py<span class="token punctuation">"</span></span>
+      <span class="token attr-name">args</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>--fig-id 1 --no-reset --name turtle2<span class="token punctuation">"</span></span>
+      <span class="token attr-name">output</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>screen<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>group</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>launch</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+    </div>
+</div>
+<p>代码中需要注意的地方：</p>
+<ol>
+<li><code>PID</code>系数调整，可以尝试下不同的PID系数组合，可能会崩溃哦</li>
+<li>角误差的计算，通过做差得到<code>ang_error</code>后需要用<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>δ</mi><mo>+</mo><mi>π</mi><mo stretchy="false">)</mo><mi mathvariant="normal">%</mi><mo stretchy="false">(</mo><mn>2</mn><mi>π</mi><mo stretchy="false">)</mo><mo>−</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">(\delta+\pi)\%(2\pi) - \pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="mclose">)</span><span class="mord">%</span><span class="mopen">(</span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span></span></span></span>这个变换来将超过<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mi>π</mi><mo separator="true">,</mo><mi>π</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-\pi,\pi]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="mclose">]</span></span></span></span>的角度等价变换到该范围内（举例：当<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mrow><mi>t</mi><mi>a</mi><mi>r</mi><mi>g</mi><mi>e</mi><mi>t</mi></mrow></msub><mo>=</mo><mn>0.8</mn><mi>π</mi><mo separator="true">,</mo><msub><mi>α</mi><mrow><mi>n</mi><mi>o</mi><mi>w</mi></mrow></msub><mo>=</mo><mo>−</mo><mn>0.8</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">\alpha_{target}=0.8\pi,\alpha_{now}=-0.8\pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.28055599999999997em;"><span style="top:-2.5500000000000003em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">8</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">−</span><span class="mord">0</span><span class="mord">.</span><span class="mord">8</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span></span></span></span>，则<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>=</mo><msub><mi>α</mi><mrow><mi>t</mi><mi>a</mi><mi>r</mi><mi>g</mi><mi>e</mi><mi>t</mi></mrow></msub><mo>−</mo><msub><mi>α</mi><mrow><mi>n</mi><mi>o</mi><mi>w</mi></mrow></msub><mo>=</mo><mn>1.6</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">\delta=\alpha_{target}-\alpha_{now}=1.6\pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8694379999999999em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.28055599999999997em;"><span style="top:-2.5500000000000003em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">.</span><span class="mord">6</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span></span></span></span>，但是这两个角差距很小，只需要转<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>0.4</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">-0.4\pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">−</span><span class="mord">0</span><span class="mord">.</span><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span></span></span></span>即可，这就是这个变化的作用，如果转<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.6</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">1.6\pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">.</span><span class="mord">6</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span></span></span></span>可能导致PID计算崩溃哦）</li>
+<li>可以自己尝试下不同的控制频率<code>--hz 10</code>，默认是10，更低的hz可能导致pid控制的出错哦（抖动非常厉害），而更高的hz就看不出来什么区别了</li>
+<li>执行<code>*.launch</code>文件时，会将ROS所需的CLA(Command-line argument)，例如<code>__name:=</code>和<code>__log:=</code>传给Python，因此就需要忽略这些参数，对于<code>tyro</code>可以在解析时候加入<code>return_unknown_args=True</code>来忽略，使用<code>argparse</code>时候可以通过<code>parser.parse_known_args()</code>忽略多余参数</li>
+<li><code>*.launch</code>中执行的<code>node</code>输出的<code>info</code>日志不会显示出来，需要加上<code>output=&quot;screen&quot;</code>才会显示</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>绘制过程</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/figures/robotics/ros/ros1_1_10_turtle_double_loves.gif" srcset="/img/loading.gif" lazyload alt="double_love" /></td>
+<td><img src="/figures/robotics/ros/ros1_1_10_turtle_double_loves.png" srcset="/img/loading.gif" lazyload alt="result" /></td>
+</tr>
+</tbody>
+</table>
+<h3 id="111-ros-bag录制topic"><a class="markdownIt-Anchor" href="#111-ros-bag录制topic"></a> 1.11 ROS Bag录制topic</h3>
+<h4 id="录制bag"><a class="markdownIt-Anchor" href="#录制bag"></a> 录制Bag</h4>
+<p><code>mkdir ~/bagfiles &amp;&amp; cd ~/bagfiles</code>，使用<code>rosbag record -a</code>录制开启到关闭这段时间内的所有topic中message，例如，启动如下两个node:</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">rosrun turtlesim turtlesim_node
+rosbag record <span class="token parameter variable">-a</span>  <span class="token comment"># 开始录制</span>
+rosrun tutorials play_turtle.py  <span class="token comment"># 启动绘制程序</span>
+<span class="token comment"># 等待绘制完毕后，ctrl+c关闭录制</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>录制完毕后可以看到当前文件夹下创建了一个<code>*.bag</code>文件，<code>rosbag info *.bag</code>可以查看包的信息，例如总共录制时长、每个topic中的消息数目，重放包信息如下：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">rosbag play *.bag  <span class="token comment"># 重放包中每个message</span>
+rosbag play <span class="token parameter variable">-r</span> <span class="token number">2</span> *.bag  <span class="token comment"># 以两倍速重放</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p>在<code>rosservice call /reset</code>后，执行2次1倍速重放+1次2倍速重放，可以看到如下图的效果：<br />
+<img src=/figures/robotics/ros/ros_1_11_bag_play.png width=50%></img></p>
+<p>如果我们只想录制部分topic，可以如下指定:</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># -O 制定输出的文件名为draw_love</span>
+<span class="token comment"># 最后的变量均为录制的topic对象</span>
+rosbag record <span class="token parameter variable">-O</span> draw_love /turtle1/cmd_vel<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>执行<code>rosbag play draw_love.bag</code>应该和上面录制全部message的回放效果相同。</p>
+<h4 id="保存为yaml"><a class="markdownIt-Anchor" href="#保存为yaml"></a> 保存为yaml</h4>
+<p><code>bag</code>中还保存了消息发送的频率，时间等信息，如果我们只想看<code>yaml</code>数据信息，可以直接通过<code>rostopic echo &lt;topic_name&gt; | tee &lt;filename&gt;.yaml</code>保存到文件中，例如</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">rostopic <span class="token builtin class-name">echo</span> /turtle1/cmd_vel <span class="token operator">|</span> <span class="token function">tee</span> cmd_vel.yaml  <span class="token comment"># 终端1</span>
+rosbag play <span class="token number">2024</span>-12-16-14-11-27.bag <span class="token parameter variable">-i</span>  <span class="token comment"># 终端2, -i表示immediate, 立刻将所有msg全部输出出来</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p>查看<code>cmd_vel.yaml</code>文件就可以看到每个msg的具体信息了。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Robotics/" class="category-chain-item">Robotics</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Robotics/ROS/" class="category-chain-item">ROS</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ROS1入门</div>
+      <div>https://mimosadott.github.io/posts/19333/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>宇智波佐助</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/25605/" title="Jetson AGX Orin 配置">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Jetson AGX Orin 配置</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/64702/" title="有刷直流电机控制笔记">
+                        <span class="hidden-mobile">有刷直流电机控制笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.4.16/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"7JWUOvcOubbTCSI8jHpuVSJ0-gzGzoHsz","appKey":"98rYU3iGXuuKPVyUjNYHGpr9","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> Enjoy sharing! <br> <span id="runtime_span"></span> <script type="text/javascript">function show_runtime(){window.setTimeout("show_runtime()",1000);X=new Date("3/19/2021 00:00:00");Y=new Date();T=(Y.getTime()-X.getTime());M=24*60*60*1000;a=T/M;A=Math.floor(a);b=(a-A)*24;B=Math.floor(b);c=(b-B)*60;C=Math.floor((b-B)*60);D=Math.floor((c-C)*60);runtime_span.innerHTML="小站已运行"+A+"天"+B+"小时"+C+"分"+D+"秒"}show_runtime();</script> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script  src="https://lib.baomitu.com/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="//fastly.jsdelivr.net/gh/bynotes/texiao/source/js/caidai.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

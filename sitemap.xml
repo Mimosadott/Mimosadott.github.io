@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://mimosadott.github.io/posts/63534/</loc>
+    
+    <lastmod>2025-02-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://mimosadott.github.io/posts/42496/</loc>
     
     <lastmod>2025-02-24</lastmod>
@@ -29,7 +38,7 @@
   </url>
   
   <url>
-    <loc>https://mimosadott.github.io/posts/64305/</loc>
+    <loc>https://mimosadott.github.io/posts/44869/</loc>
     
     <lastmod>2025-02-23</lastmod>
     
@@ -47,7 +56,7 @@
   </url>
   
   <url>
-    <loc>https://mimosadott.github.io/posts/10130/</loc>
+    <loc>https://mimosadott.github.io/posts/64305/</loc>
     
     <lastmod>2025-02-23</lastmod>
     
@@ -56,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://mimosadott.github.io/posts/44869/</loc>
+    <loc>https://mimosadott.github.io/posts/10130/</loc>
     
     <lastmod>2025-02-23</lastmod>
     
@@ -74,7 +83,7 @@
   </url>
   
   <url>
-    <loc>https://mimosadott.github.io/posts/25605/</loc>
+    <loc>https://mimosadott.github.io/posts/48556/</loc>
     
     <lastmod>2025-02-23</lastmod>
     
@@ -83,7 +92,7 @@
   </url>
   
   <url>
-    <loc>https://mimosadott.github.io/posts/48556/</loc>
+    <loc>https://mimosadott.github.io/posts/25605/</loc>
     
     <lastmod>2025-02-23</lastmod>
     
@@ -101,7 +110,7 @@
   </url>
   
   <url>
-    <loc>https://mimosadott.github.io/posts/19333/</loc>
+    <loc>https://mimosadott.github.io/posts/43386/</loc>
     
     <lastmod>2025-02-23</lastmod>
     
@@ -110,7 +119,7 @@
   </url>
   
   <url>
-    <loc>https://mimosadott.github.io/posts/43386/</loc>
+    <loc>https://mimosadott.github.io/posts/19333/</loc>
     
     <lastmod>2025-02-23</lastmod>
     
@@ -146,6 +155,15 @@
   </url>
   
   <url>
+    <loc>https://mimosadott.github.io/categories/index.html</loc>
+    
+    <lastmod>2025-02-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://mimosadott.github.io/tags/index.html</loc>
     
     <lastmod>2025-02-23</lastmod>
@@ -163,19 +181,10 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>https://mimosadott.github.io/categories/index.html</loc>
-    
-    <lastmod>2025-02-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 
   <url>
     <loc>https://mimosadott.github.io/</loc>
-    <lastmod>2025-02-24</lastmod>
+    <lastmod>2025-02-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -185,14 +194,14 @@
   
   <url>
     <loc>https://mimosadott.github.io/categories/Robotics/</loc>
-    <lastmod>2025-02-24</lastmod>
+    <lastmod>2025-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://mimosadott.github.io/categories/Robotics/ROS/</loc>
-    <lastmod>2025-02-24</lastmod>
+    <lastmod>2025-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

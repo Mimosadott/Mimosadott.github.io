@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>hexo使用手册</title>
+    <link href="/posts/63534/"/>
+    <url>/posts/63534/</url>
+    
+    <content type="html"><![CDATA[<h3 id="hexo新设备部署"><a class="markdownIt-Anchor" href="#hexo新设备部署"></a> hexo新设备部署</h3><p>按照README.md部署即可</p><h3 id="hexo使用说明"><a class="markdownIt-Anchor" href="#hexo使用说明"></a> hexo使用说明</h3><ol><li>git bash中使用git pull，确保本地与github最新文件同步</li><li>hexo clean</li><li>hexo new post 标题 ,创建新文章</li><li>编辑文章</li><li>hexo s，hexo d, hexo clean</li><li>git add. , git commit -m “说明” , git push</li></ol><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>title</title>
     <link href="/posts/42496/"/>
     <url>/posts/42496/</url>
